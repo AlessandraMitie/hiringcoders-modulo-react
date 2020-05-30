@@ -1,23 +1,30 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+//useEffect é um hook que monitora uma mudança em cima de uma variável e vai disparar uma função quando essa variável for alterada
 import * as S from './styled';
 //S pode ser qualquer coisa, é apenas para identificar o estilo
 
 //componente
 export default function Repositories() {
+    //estado:
+    const [ repositories, setRepositories ] = useState([]);
+    useEffect(() => {
+        let repositoriesName = localStorage.getItem('repositoriesName');
+        //vai armazenar dentro de repositoriesName o valor que está em localStorage
+        repositoriesName = JSON.parse(repositoriesName);
+        //console.log(repositoriesName);
+        //pega tudo o que tinha dentro do localStorage
+        setRepositories(repositoriesName);
+        localStorage.clear();
+    }, []);
     return (
         <S.Container>
             <S.Title>Repositórios</S.Title>
             <S.List>
-                <S.ListItem>Repositorio: Nome Repositório</S.ListItem>
-                <S.ListItem>Repositorio: Nome Repositório</S.ListItem>
-                <S.ListItem>Repositorio: Nome Repositório</S.ListItem>
-                <S.ListItem>Repositorio: Nome Repositório</S.ListItem>
-                <S.ListItem>Repositorio: Nome Repositório</S.ListItem>
-                <S.ListItem>Repositorio: Nome Repositório</S.ListItem>
-                <S.ListItem>Repositorio: Nome Repositório</S.ListItem>
-                <S.ListItem>Repositorio: Nome Repositório</S.ListItem>
-                <S.ListItem>Repositorio: Nome Repositório</S.ListItem>
-                <S.ListItem>Repositorio: Nome Repositório</S.ListItem>
+                { repositories.map(repository => {
+                    return (
+                        <S.ListItem>Repositório: { repository }</S.ListItem>
+                    )
+                })}
             </S.List>
         </S.Container>
     )
