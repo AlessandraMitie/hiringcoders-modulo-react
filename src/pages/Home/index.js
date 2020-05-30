@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import * as S from './styled';
 
 //useState é uma função que vai retornar um array
 //[ usuario, setUsuario ]
@@ -19,7 +20,7 @@ function App(props) {
   }
 
   return (
-    <>
+    <S.Container>
       
       {/* 
       <h1> { props.title } { props.user }</h1> 
@@ -28,10 +29,10 @@ function App(props) {
       <p> { usuario } </p>
       */}
       
-      <input className="usuarioInput" placeholder="Usuário" value={usuario} onChange={e => setUsuario(e.target.value)} />
+      <S.Input className="usuarioInput" placeholder="Usuário" value={usuario} onChange={e => setUsuario(e.target.value)} />
       {/* Evento onChange vai capturar qualquer alteração no input */}
-      <button type="button" onClick={handlePesquisa}>Pesquisar</button>
-    </>
+      <S.Button type="button" onClick={handlePesquisa}>Pesquisar</S.Button>
+    </S.Container>
   );
 }
 
