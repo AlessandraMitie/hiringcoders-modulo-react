@@ -11,12 +11,21 @@ function App(props) {
   const [ usuario, setUsuario ] = useState('');
   //'' é o estado inicial do usuario
   function handlePesquisa() {
-    axios.get(`https://api.github.com/users/${usuario}/repos`).then(response => console.log(response.data));
+    axios.get(`https://api.github.com/users/${usuario}/repos`).then(response => {
+      const repositories = response.data;
     //axios vai fazer a requisição pra api do github
     //usa o .then porque é uma promisse que retorna
     //response.data para trazer so os repositórios
-
     //console.log(usuario);
+      const repositoriesName = [];
+      
+      repositories.map((repository) => {
+        repositoriesName.push(repository.name);
+      });
+      localStorage.setItem('repositoriesName', JSON.stringify(repositoriesName));
+      //vai setar um valor no localStorage
+      //stingfy é um método que pega um objeto e transforma ele numa string
+    });
   }
 
   return (
