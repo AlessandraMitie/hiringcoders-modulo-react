@@ -13,13 +13,16 @@ function App(props) {
   const history = useHistory();
   const [ usuario, setUsuario ] = useState('');
   //'' é o estado inicial do usuario
+  const [ erro, setErro ] = useState(false);
+
   function handlePesquisa() {
-    axios.get(`https://api.github.com/users/${usuario}/repos`).then(response => {
+    axios.get(`https://api.github.com/users/${usuario}/repos`)
+    .then(response => {
       const repositories = response.data;
-    //axios vai fazer a requisição pra api do github
-    //usa o .then porque é uma promisse que retorna
-    //response.data para trazer so os repositórios
-    //console.log(usuario);
+      //axios vai fazer a requisição pra api do github
+      //usa o .then porque é uma promisse que retorna
+      //response.data para trazer so os repositórios
+      //console.log(usuario);
       const repositoriesName = [];
       
       repositories.map((repository) => {
@@ -28,25 +31,29 @@ function App(props) {
       localStorage.setItem('repositoriesName', JSON.stringify(repositoriesName));
       //vai setar um valor no localStorage
       //stingfy é um método que pega um objeto e transforma ele numa string
+      setErro(false);
       history.push('/repositories');
       //sempre que salvar os dados no localstorage, vai chamar o repositories
+    })
+    .catch(err => {
+      setErro(true);
     });
   }
 
   return (
-    <S.Container>
+    <S.HomeContainer>
       
-      {/* 
-      <h1> { props.title } { props.user }</h1> 
-      */}
-      {/*
-      <p> { usuario } </p>
-      */}
+      {/* <h1> { props.title } { props.user }</h1> */}
+      {/* <p> { usuario } </p> */}
       
-      <S.Input className="usuarioInput" placeholder="Usuário" value={usuario} onChange={e => setUsuario(e.target.value)} />
-      {/* Evento onChange vai capturar qualquer alteração no input */}
-      <S.Button type="button" onClick={handlePesquisa}>Pesquisar</S.Button>
-    </S.Container>
+      <S.Content>
+        <S.Input className="usuarioInput" placeholder="Usuário" value={usuario} onChange={e => setUsuario(e.target.value)} />
+        {/* Evento onChange vai capturar qualquer alteração no input */}
+        <S.Button type="button" onClick={handlePesquisa}>Pesquisar</S.Button>
+      </S.Content>
+      { erro ? <S.ErrorMsg>Ocorreu um erro. Tente novamente.</S.ErrorMsg> : '' }
+      
+    </S.HomeContainer>
   );
 }
 
